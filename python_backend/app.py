@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 from torchvision import models, transforms
 from PIL import Image
+from upcycle_bot import get_upcycling_ideas
 import io
 
 app = Flask(__name__)
@@ -67,7 +68,10 @@ def predict():
             _, predicted = torch.max(outputs, 1)
             prediction = predicted.item()
 
-        return jsonify({"prediction": dic[prediction]})
+        # Get upcycling ideas from GPT-4 
+        upcycling_ideas = get_upcycling_ideas(dic[prediction])
+
+        return jsonify({"prediction": dic[prediction], "upcycling_ideas": upcycling_ideas})
     else:
         return jsonify({"error": "Invalid file format"}), 400
 
