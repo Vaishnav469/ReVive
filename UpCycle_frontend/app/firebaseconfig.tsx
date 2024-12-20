@@ -9,7 +9,7 @@ import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: 'AIzaSyC3StBlEeyVyLKSIJiXMp7OoZwa4rdcUI8',
+    // apiKey: you,
     authDomain: "upcycle-f1725.firebaseapp.com",
     projectId: "upcycle-f1725",
     storageBucket: "upcycle-f1725.firebasestorage.app",
