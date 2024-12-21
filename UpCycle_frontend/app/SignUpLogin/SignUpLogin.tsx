@@ -1,11 +1,12 @@
 // SignupLogin.js
 import { useState } from 'react';
 import { View, Text, TextInput, Button, ActivityIndicator, StyleSheet, KeyboardAvoidingView } from 'react-native';
-import { FIREBASE_AUTH } from '../firebaseconfig';
-
+import { FIRESTORE_DB, FIREBASE_AUTH } from '../firebaseconfig';
+import { doc, setDoc } from 'firebase/firestore';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useSignup } from '../signupcontext';
 import { router } from 'expo-router';
+import { useColorScheme } from '@/hooks/useColorScheme';
 
 const SignupLogin = () => {
   const [email, setEmail] = useState('');
@@ -13,10 +14,9 @@ const SignupLogin = () => {
   const [username, setUsername] = useState('');
   const [isSigningUp, setIsSigningUp] = useState(false); // Toggle between sign up and login
   const [loading, setloading] = useState(false)
-  const { fromSignup, setFromSignup } = useSignup(); // Access the state updater from context
-
-  
-  
+  const { setFromSignup } = useSignup(); // Access the state updater from context
+  const colorScheme = useColorScheme();
+  const isDark = colorScheme === 'dark';
   const auth = FIREBASE_AUTH;
 
   const handleSignup = async () => {
@@ -24,9 +24,11 @@ const SignupLogin = () => {
     try { 
       console.log(email, password)
       setFromSignup(true);
-      await createUserWithEmailAndPassword(auth, email, password);
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      await setDoc(doc(FIRESTORE_DB, 'profile', user.uid), { username:username, email:email });
+
       await signInWithEmailAndPassword(auth, email, password);
-      
 
     } catch (error) {
       console.error('Signup Error:', error);
@@ -49,13 +51,17 @@ const SignupLogin = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, {backgroundColor: isDark ? "#121212" : "#F3ECF4"}]}>
       <KeyboardAvoidingView behavior='padding'>
-        <Text style={styles.title}>{isSigningUp ? 'Sign Up' : 'Log In'}</Text>
+        <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000"  }]}>{isSigningUp ? 'Sign Up' : 'Log In'}</Text>
             {isSigningUp && (<TextInput
-            style={styles.input}
+            style={[styles.input, {
+              color: isDark ? "#FFFFFF" : "#000000",
+              borderColor: isDark ? "#3E3E3E" : "#CCCCCC",
+              backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+          }]}
             placeholder="Username"
-            placeholderTextColor="#666" 
+            placeholderTextColor={isDark ? "#AAAAAA" : "#888888"}
             value={username}
             onChangeText={(e) => setUsername(e)}
             autoCapitalize='none'
@@ -63,17 +69,25 @@ const SignupLogin = () => {
             }
            
             <TextInput
-                style={styles.input}
+                style={[styles.input, {
+                  color: isDark ? "#FFFFFF" : "#000000",
+                  borderColor: isDark ? "#3E3E3E" : "#CCCCCC",
+                  backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+              }]}
                 placeholder="Email"
-                placeholderTextColor="#666" 
+                placeholderTextColor={isDark ? "#AAAAAA" : "#888888"}
                 value={email}
                 onChangeText={(e) => setEmail(e)}
                 autoCapitalize='none'
             />
             <TextInput
-                style={styles.input}
+                style={[styles.input, {
+                  color: isDark ? "#FFFFFF" : "#000000",
+                  borderColor: isDark ? "#3E3E3E" : "#CCCCCC",
+                  backgroundColor: isDark ? "#1E1E1E" : "#F5F5F5",
+              }]}
                 placeholder="Password"
-                placeholderTextColor="#666" 
+                placeholderTextColor={isDark ? "#AAAAAA" : "#888888"}
                 secureTextEntry
                 value={password}
                 onChangeText={(Text) => setPassword(Text)}
@@ -82,11 +96,13 @@ const SignupLogin = () => {
 
             {loading ? (<ActivityIndicator size="large" color="#0000ff" />) :
                 (<Button
+                    color={isDark ? "#BB86FC" : "#6200EE"}
                     title={isSigningUp ? "Sign Up" : "Log In"}
                     onPress={isSigningUp ? handleSignup : handleLogin}
                 />)
             }
             <Button
+                color={isDark ? "#BB86FC" : "#6200EE"}
                 title={`Switch to ${isSigningUp ? "Log In" : "Sign Up"}`}
                 onPress={() => setIsSigningUp(!isSigningUp)}
             />
@@ -99,7 +115,6 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       padding: 20,
-      backgroundColor: '#F3ECF4',
     },
     title: {
       fontSize: 24,
@@ -114,7 +129,6 @@ const styles = StyleSheet.create({
       borderRadius: 5,
       marginBottom: 15,
       paddingHorizontal: 10,
-      backgroundColor: '#fff',
     }
   });
 

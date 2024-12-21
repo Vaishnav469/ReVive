@@ -1,7 +1,7 @@
 import { Stack, router } from "expo-router";
 import React, { useState, createContext, useContext, useEffect } from 'react';
 import { FIRESTORE_DB, FIREBASE_AUTH } from '../firebaseconfig';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import QuestionScreen from './Questionscreen';
 import { useSignup } from '../signupcontext';
 
@@ -46,7 +46,7 @@ export default function QuestionLayout() {
       } else {
         const user = auth.currentUser;
         if (user) {
-          setDoc(doc(FIRESTORE_DB, 'profile', user.uid),  updatedResponses)
+          updateDoc(doc(FIRESTORE_DB, 'profile', user.uid),  updatedResponses)
             .then(() => {
               console.log("Responses saved to Firestore:", updatedResponses);
               setFromSignup(false);

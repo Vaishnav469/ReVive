@@ -5,8 +5,10 @@ from torchvision import models, transforms
 from PIL import Image
 from upcycle_bot import get_upcycling_ideas
 import io
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 # Define device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -58,6 +60,8 @@ def predict():
         return jsonify({"error": "No file provided"}), 400
 
     file = request.files['file']
+    
+
     if file and allowed_file(file.filename):
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes))
@@ -68,15 +72,40 @@ def predict():
             _, predicted = torch.max(outputs, 1)
             prediction = predicted.item()
 
+        location = request.form.get('location')
+        money = request.form.get('money')
+        time = request.form.get('time')
         # Get upcycling ideas from GPT-4 
-        upcycling_ideas = get_upcycling_ideas(dic[prediction])
+        upcycling_ideas = get_upcycling_ideas(dic[prediction], location, money, time)
+
+        print(upcycling_ideas)
 
         return jsonify({"prediction": dic[prediction], "upcycling_ideas": upcycling_ideas})
     else:
         return jsonify({"error": "Invalid file format"}), 400
+    
+@app.route('/manual-input', methods=['POST'])
+def ideas():
+    """Handle manual input for predictions."""
+    data = request.get_json()
+
+    if not data or 'item_name' not in data:
+        return jsonify({"error": "No item name provided"}), 400
+
+    item_name = data['item_name']
+    location = data.get('location')
+    money = data.get('money')
+    time = data.get('time')
+
+    # Get upcycling ideas for the given item name
+    upcycling_ideas = get_upcycling_ideas(item_name, location, money, time)
+
+    return jsonify({"prediction": item_name, "upcycling_ideas": upcycling_ideas})
+
+
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in {'png', 'jpg', 'jpeg'}
 
 if __name__ == '__main__':
-    app.run(debug=False, port=5000)
+    app.run(host='192.168.70.47', debug=False, port=8000)
