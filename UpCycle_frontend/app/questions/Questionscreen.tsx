@@ -24,7 +24,6 @@ const QuestionScreen = () => {
       return;
     }
 
-    console.log(key, response)
 
     handleResponse(key, response); // Save response and navigate
   };

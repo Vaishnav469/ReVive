@@ -38,9 +38,7 @@ export default function HomePage() {
             const document = await getDoc(doc(FIRESTORE_DB, 'profile', user.uid));
             if (document.exists()) {
                 setProfileData(document.data());
-              } else {
-                console.log("No such document!");
-            }
+              }
           }
           
         } catch (err) {

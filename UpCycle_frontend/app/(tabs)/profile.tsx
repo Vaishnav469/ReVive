@@ -21,10 +21,7 @@ const Profile = () => {
           const document = await getDoc(doc(FIRESTORE_DB, 'profile', user.uid));
           if (document.exists()) {
               setProfileData(document.data());
-              console.log(document.data());
-            } else {
-              console.log("No such document!");
-          }
+            }
         }
         
       } catch (err) {

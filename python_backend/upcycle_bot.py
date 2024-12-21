@@ -48,7 +48,6 @@ def get_upcycling_ideas(item_name, location, money, time):
         max_tokens=300
     )
     ideas = response.choices[0].message.content.strip()
-    print(ideas)
 
     try: 
         ideas = json.loads(ideas)

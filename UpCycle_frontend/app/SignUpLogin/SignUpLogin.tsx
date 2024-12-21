@@ -21,8 +21,7 @@ const SignupLogin = () => {
 
   const handleSignup = async () => {
     setloading(true);
-    try { 
-      console.log(email, password)
+    try {
       setFromSignup(true);
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
@@ -40,7 +39,6 @@ const SignupLogin = () => {
   const handleLogin = async () => {
     setloading(true);
     try {
-      console.log(email, password)
       setFromSignup(false);
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {

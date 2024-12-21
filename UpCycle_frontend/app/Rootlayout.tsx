@@ -32,8 +32,6 @@ export default function RootLayout() {
     }
 
     const unsubscribe = onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log('user', user)
-      console.log('fromSignup', fromSignup)
       if (user && fromSignup) {
         setUser(user);
         router.replace('/questions/Questionscreen?key=Location');

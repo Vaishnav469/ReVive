@@ -36,7 +36,6 @@ def load_model(filepath='./trained_model.pth'):
     checkpoint = torch.load(filepath, map_location=device)
     model.load_state_dict(checkpoint['model_state_dict'], strict=False)
     model.eval()
-    print(f"Model loaded from {filepath}")
 
 load_model()
 
@@ -77,8 +76,6 @@ def predict():
         time = request.form.get('time')
         # Get upcycling ideas from GPT-4 
         upcycling_ideas = get_upcycling_ideas(dic[prediction], location, money, time)
-
-        print(upcycling_ideas)
 
         return jsonify({"prediction": dic[prediction], "upcycling_ideas": upcycling_ideas})
     else:
