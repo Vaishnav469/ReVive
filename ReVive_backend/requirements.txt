@@ -1,0 +1,6 @@
+PyTorch
+Flask
+Flask-Cors
+numpy
+requests
+openai
