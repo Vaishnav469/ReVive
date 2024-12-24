@@ -6,6 +6,13 @@ import { useTheme } from "@react-navigation/native";
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB, FIREBASE_AUTH } from '../firebaseconfig';
+import * as Font from 'expo-font';
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'LemonJelly': require('../../assets/fonts/LemonJelly.ttf'),
+  });
+};
 
 export default function HomePage() {
   const [image, setImage] = useState<string | null>(null);
@@ -19,7 +26,18 @@ export default function HomePage() {
   const [loading, setloading] = useState(false)
   const [profileData, setProfileData] = useState<any>(null); 
   const auth = FIREBASE_AUTH;
-  
+
+  const [fontLoaded, setFontLoaded] = useState(false);
+  useEffect(() => {
+    (async () => {
+      try {
+        await fetchFonts();
+        setFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading fonts: ", error);
+      }
+    })();
+  }, []);
 
   // Request permissions for camera and media library
   useEffect(() => {
@@ -164,8 +182,9 @@ export default function HomePage() {
     keyboardVerticalOffset={Platform.OS === 'ios' ? 50 : 0} // Adjust offset as needed
   >
     <ScrollView contentContainerStyle={[styles.scrollContainer,  { backgroundColor: colors.background }]}>
+        <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000"  }]}>ReVive</Text>
         <View style={styles.container}>
-            <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000"  }]}>Upcycle</Text>
+            
             {prediction === null && (
             <View style={styles.buttonContainer}>
                 <Button  color={isDark ? "#BB86FC" : "#6200EE"} title="Pick an Image" onPress={pickImage} />
@@ -264,9 +283,11 @@ const styles = StyleSheet.create({
         textAlign: 'center',
       },
       title: {
-        fontSize: 24,
+        fontSize: 43,
         fontWeight: 'bold',
-        top: 40,
+        fontFamily: 'LemonJelly',
+        top: 63,
+        left: 30,
         marginBottom: 20,
       },
       buttonContainer: {

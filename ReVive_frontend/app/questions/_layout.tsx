@@ -35,10 +35,8 @@ export default function QuestionLayout() {
   const { setFromSignup } = useSignup(); 
 
   const handleResponse = async (key: string, response: string) => {
-    console.log(key, response)
     setResponses((prev) => {
       const updatedResponses = { ...prev, [key]: response };
-      console.log("Updated Responses:", updatedResponses); // Logs the updated responses immediately
       const nextIndex = questions.findIndex(q => q.key === key) + 1;
       if (nextIndex < questions.length) {
         // Using router.push for navigation in Expo Router
@@ -48,7 +46,6 @@ export default function QuestionLayout() {
         if (user) {
           updateDoc(doc(FIRESTORE_DB, 'profile', user.uid),  updatedResponses)
             .then(() => {
-              console.log("Responses saved to Firestore:", updatedResponses);
               setFromSignup(false);
             })
             .catch((error) => {

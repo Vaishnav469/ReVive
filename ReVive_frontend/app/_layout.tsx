@@ -5,6 +5,7 @@ import { ThemeProvider } from '@react-navigation/native';
 import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
+
 export default function Layout() {
     const colorScheme = useColorScheme();
   return (

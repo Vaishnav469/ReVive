@@ -4,6 +4,13 @@ import { Button, Card, Avatar } from '@rneui/themed';
 import { doc, getDoc } from 'firebase/firestore';
 import { FIRESTORE_DB, FIREBASE_AUTH } from '../firebaseconfig';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import * as Font from 'expo-font';
+
+const fetchFonts = () => {
+  return Font.loadAsync({
+    'LemonJelly': require('../../assets/fonts/LemonJelly.ttf'),
+  });
+};
 
 const Profile = () => {
   const [user, setUser] = useState(FIREBASE_AUTH.currentUser);
@@ -12,6 +19,17 @@ const Profile = () => {
   const colorScheme = useColorScheme();
   const isDark = colorScheme === 'dark';
   
+  const [fontLoaded, setFontLoaded] = useState(false);
+  useEffect(() => {
+    (async () => {
+      try {
+        await fetchFonts();
+        setFontLoaded(true);
+      } catch (error) {
+        console.error("Error loading fonts: ", error);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -34,9 +52,11 @@ const Profile = () => {
   }, []);
 
   return (
-    loading ?  <ActivityIndicator size="large" color="#0000ff"  /> :
+    loading ?  <View style={[styles.container]}><ActivityIndicator size="large" color="#0000ff"  /></View> :
     user && profileData && (
-    <View style={[styles.container, {backgroundColor: isDark ? "#121212" : "#F3ECF4"}]}>
+      <View style={[styles.scrollContainer, {backgroundColor: isDark ? "#121212" : "#F3ECF4"}]}>
+      <Text style={[styles.title, { color: isDark ? "#FFFFFF" : "#000000"  }]}>ReVive</Text>
+      <View style={[styles.container]}>
       <Card containerStyle={[styles.card, {backgroundColor: isDark ? "#121212" : "#F3ECF4"}]}>
         <View style={[styles.header]}>
           <Avatar
@@ -60,16 +80,29 @@ const Profile = () => {
           onPress={() => FIREBASE_AUTH.signOut()}
         />
       </Card>
-    </View>)
+    </View>
+    </View>
+    )
   );
 };
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+  },
+  title: {
+    fontSize: 43,
+    fontWeight: 'bold',
+    fontFamily: 'LemonJelly',
+    top: 63,
+    left: 30,
+    marginBottom: 20,
   },
   card: {
     width: '90%',
