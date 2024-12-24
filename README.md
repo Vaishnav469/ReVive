@@ -10,12 +10,29 @@ The inspiration behind ReVive was to promote a sustainable lifestyle by encourag
 
 ---
 
+# Demo 🎥
+
+Watch the demo of Questia in action:
+
+
+https://github.com/user-attachments/assets/1efd53a6-02e4-4025-80bf-b5cc1f053dff
+
+---
+
 ## 🚀 How It Works
 
 1. 📸 **Upload or Capture an Image**: Users can upload a picture of a household item or use their camera to take a photo.
-2. 🤖 **Prediction**: Our fine-tuned ResNet50 model predicts the item in the image (trained on 25 different labels with 90% accuracy).
+<img src="https://github.com/user-attachments/assets/18083243-3caf-4702-87a3-1897a6029611" alt="IMG_6479" width="300" />
+
+2. 🤖 **Prediction**: Our **fine-tuned ResNet50 model** predicts the item in the image (trained on 25 different labels with 90% accuracy).
+<img src="https://github.com/user-attachments/assets/023fb200-d17f-4676-a5bc-ee133eb78499" alt="IMG_6479" width="300" />
+
 3. 💡 **AI Suggestions:** The app automatically uses GPT-4 to generate personalized upcycling ideas based on the prediction and user preferences (location, time, and budget that is asked when signed up).
+<img src="https://github.com/user-attachments/assets/18083243-3caf-4702-87a3-1897a6029611" alt="IMG_6479" width="300" />
+   
 4. ✏️ **Manual Input:** If the user thinks the prediction is wrong, they can manually enter the item they want to upcycle to receive updated suggestions.
+<img src="https://github.com/user-attachments/assets/0cdd6916-9ffd-4a86-aa40-14480feca277" alt="IMG_6479" width="300" />
+
 5. 🎥 **YouTube Integration**: The app fetches related YouTube videos using the YouTube API to provide visual inspiration for the upcycling process.
 6. 🖥️ **Frontend Display**: All suggestions and videos are presented in an easy-to-navigate interface for users to explore.
 
