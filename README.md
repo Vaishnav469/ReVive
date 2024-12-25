@@ -12,7 +12,7 @@ The inspiration behind ReVive was to promote a sustainable lifestyle by encourag
 
 # Demo 🎥
 
-Watch the demo of Questia in action:
+Watch the demo of ReVive in action:
 
 
 https://github.com/user-attachments/assets/1efd53a6-02e4-4025-80bf-b5cc1f053dff
