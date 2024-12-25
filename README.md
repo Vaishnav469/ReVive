@@ -38,7 +38,7 @@ https://github.com/user-attachments/assets/1efd53a6-02e4-4025-80bf-b5cc1f053dff
 
 ---
 
-## 🛠️ How We Built It
+## 🛠️ How I Built It
 
 - 🧠 **Machine Learning**: Fine-tuned a ResNet50 model in PyTorch on a dataset of 25 household item labels, achieving 90% accuracy.
 - 🌐 **Backend**: Flask API to connect the ML model and handle user requests.
